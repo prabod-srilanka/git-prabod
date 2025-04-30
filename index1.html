@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prabod Saranga - Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --main-color: #FF0000;
+      --main-glow: 0 0 15px var(--main-color);
+      --main-glow-hover: 0 0 30px var(--main-color);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+      background: transparent;
+      color: white;
+      position: relative;
+    }
+
+    canvas#galaxy {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background: black;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1200px;
+      padding: 2.5rem 5% 1rem;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .corner-name {
+      background: var(--main-color);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 25px;
+      font-weight: bold;
+      font-size: 1rem;
+      box-shadow: var(--main-glow);
+      width: fit-content;
+    }
+
+    .menu-toggle {
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      display: none;
+      z-index: 1001;
+    }
+
+    nav {
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.7);
+      width: 100%;
+      padding: 1rem 0;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      z-index: 1000;
+    }
+
+    .mobile-nav.hidden {
+      display: none !important;
+    }
+
+    .mobile-nav a {
+      margin: 10px 0;
+      font-size: 1.2rem;
+      color: white;
+      text-decoration: none;
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 2rem 5%;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      z-index: 1;
+      position: relative;
+    }
+
+    .text-area {
+      flex: 1;
+      order: 1;
+      padding-top: 1rem;
+      max-width: 600px;
+    }
+
+    .main-title2 {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+
+    .main-title {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .highlight {
+      color: var(--main-color);
+      text-shadow: 0 0 10px var(--main-color);
+    }
+
+    .description {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+
+    .image-wrapper {
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--main-color);
+      box-shadow: 0 0 140px var(--main-color);
+      animation: pulse 2s infinite ease-in-out;
+      flex-shrink: 0;
+      order: 2;
+      will-change: transform, box-shadow;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .image-wrapper:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 180px var(--main-color);
+    }
+
+    .image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 120px var(--main-color); }
+      50% { box-shadow: 0 0 180px var(--main-color); }
+    }
+
+    .social-icons {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .social-icons a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 60px;
+      height: 60px;
+      background-color: var(--main-color);
+      border-radius: 50%;
+      border: 2px solid var(--main-color);
+      box-shadow: var(--main-glow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      will-change: transform, box-shadow;
+      overflow: hidden;
+    }
+
+    .social-icons a:hover {
+      transform: scale(1.1);
+      box-shadow: var(--main-glow-hover);
+    }
+
+    .social-icons a img {
+      width: 70%;
+      height: 70%;
+      object-fit: contain;
+      display: block;
+      background-color: var(--main-color);
+    }
+
+    .cv-button {
+      margin-top: 2rem;
+      background-color: var(--main-color);
+      color: white;
+      padding: 0.8rem 2rem;
+      border: none;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: var(--main-glow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      will-change: transform, box-shadow;
+    }
+
+    .cv-button:hover {
+      transform: scale(1.05);
+      box-shadow: var(--main-glow-hover);
+    }
+
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .menu-toggle { display: block; }
+
+      .container {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .hero {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .image-wrapper {
+        width: 250px;
+        height: 250px;
+        margin-bottom: 1rem;
+        order: 1;
+      }
+
+      .text-area {
+        order: 2;
+        padding-top: 0;
+        max-width: 100%;
+      }
+
+      .corner-name {
+        margin-left: 0;
+        margin-right: auto;
+      }
+
+      .social-icons {
+        justify-content: center;
+      }
+
+      .cv-button {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+<canvas id="galaxy"></canvas>
+
+<div class="container">
+  <div class="corner-name">Prabod Saranga</div>
+  <button class="menu-toggle" onclick="toggleMenu()" id="menuIcon">☰</button>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Skills</a>
+    <a href="#">Service</a>
+    <a href="#">Contact</a>
+  </nav>
+</div>
+
+<div class="mobile-nav hidden" id="mobileNav">
+  <a href="#">Home</a>
+  <a href="#">About</a>
+  <a href="#">Skills</a>
+  <a href="#">Service</a>
+  <a href="#">Contact</a>
+</div>
+
+<section class="hero">
+  <div class="text-area">
+    <div class="main-title2">Hey I'm <span class="highlight">PRABOD</span></div>
+    <div class="main-title">I'm a <span class="highlight">DESIGNER</span></div>
+    <p class="description">I'm Prabod Saranga — a Full-Stack Developer, UI/UX Designer, and Tech Enthusiast with a passion for crafting digital solutions that blend creativity and functionality.</p>
+    <div class="social-icons">
+      <a href="https://www.pinterest.com/prabodsarangaekanayaka/" target="_blank"><img src="images/pinterest.svg" alt="Pinterest"></a>
+      <a href="https://github.com/prabod-srilanka" target="_blank"><img src="images/github.svg" alt="GitHub"></a>
+      <a href="https://www.youtube.com/channel/UCMs5MpxhmgEVHzNUApwvSLw" target="_blank"><img src="images/youtube.svg" alt="YouTube"></a>
+      <a href="https://wa.me/+94740463381" target="_blank"><img src="images/whatsapp.svg" alt="WhatsApp"></a>
+    </div>
+    <a href="https://github.com/FinixEmperor69/cv/raw/main/Prabod CV.pdf" download="Prabod CV.pdf">
+      <button class="cv-button">Download CV</button>
+    </a>
+  </div>
+
+  <div class="image-wrapper">
+    <img src="images/main.jpg" alt="Prabod Image" />
+  </div>
+</section>
+
+<script>
+  const canvas = document.getElementById('galaxy');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const count = window.innerWidth > 768 ? 500 : 200;
+    createStars(count);
+  }
+
+  function createStars(count) {
+    stars = [];
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        z: Math.random() * canvas.width
+      });
+    }
+  }
+
+  function drawStars() {
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const focalLength = canvas.width;
+
+    ctx.fillStyle = "rgba(10, 0, 25, 0.3)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let star of stars) {
+      star.z -= 2;
+      if (star.z <= 0) star.z = canvas.width;
+
+      const k = focalLength / star.z;
+      const x = (star.x - cx) * k + cx;
+      const y = (star.y - cy) * k + cy;
+
+      if (x < 0 || x >= canvas.width || y < 0 || y >= canvas.height) continue;
+
+      const size = (1 - star.z / canvas.width) * 2;
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+      ctx.fill();
+    }
+  }
+
+  function animate() {
+    drawStars();
+    requestAnimationFrame(animate);
+  }
+
+  function toggleMenu() {
+    const nav = document.getElementById("mobileNav");
+    const icon = document.getElementById("menuIcon");
+    nav.classList.toggle("hidden");
+    icon.textContent = nav.classList.contains("hidden") ? "☰" : "✖";
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  animate();
+</script>
+</body>
+</html>
